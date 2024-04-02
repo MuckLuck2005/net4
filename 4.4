@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Product
+{
+    public string Name { get; set; }
+    public DateTime ArrivalDate { get; set; }
+    public double Price { get; set; }
+    public string Manufacturer { get; set; }
+    public double[] Dimensions { get; set; } // Ширина, висота, довжина
+
+    public Product(string name, DateTime arrivalDate, double price, string manufacturer, double[] dimensions)
+    {
+        Name = name;
+        ArrivalDate = arrivalDate;
+        Price = price;
+        Manufacturer = manufacturer;
+        Dimensions = dimensions;
+    }
+}
+
+class Warehouse
+{
+    private List<Product> products = new List<Product>();
+
+    public void AddProduct(Product product)
+    {
+        products.Add(product);
+    }
+
+    public List<Product> SearchProducts(Func<Product, bool> criteria)
+    {
+        return products.Where(criteria).ToList();
+    }
+
+    public List<Product> SortProducts<TKey>(Func<Product, TKey> keySelector)
+    {
+        return products.OrderBy(keySelector).ToList();
+    }
+
+    public void DisplaySortedProducts(List<Product> sortedProducts)
+    {
+        foreach (var product in sortedProducts)
+        {
+            Console.WriteLine($"Назва: {product.Name}, Ціна: {product.Price}, Виробник: {product.Manufacturer}");
+        }
+    }
+
+    public void DisplaySearchedProducts(List<Product> searchedProducts)
+    {
+        foreach (var product in searchedProducts)
+        {
+            Console.WriteLine($"Назва: {product.Name}, Дата надходження: {product.ArrivalDate}, Ціна: {product.Price}");
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Warehouse warehouse = new Warehouse();
+
+        warehouse.AddProduct(new Product("Телевізор", new DateTime(2024, 4, 1), 1000, "Samsung", new double[] { 50, 100, 10 }));
+        warehouse.AddProduct(new Product("Холодильник", new DateTime(2024, 3, 28), 1500, "LG", new double[] { 60, 150, 70 }));
+        warehouse.AddProduct(new Product("Пральна машина", new DateTime(2024, 4, 2), 800, "Bosch", new double[] { 50, 85, 60 }));
+
+        var searchedProducts = warehouse.SearchProducts(product => product.Price > 900 && product.Manufacturer == "Samsung");
+        Console.WriteLine("Результати пошуку за ціною та виробником:");
+        warehouse.DisplaySearchedProducts(searchedProducts);
+        Console.WriteLine();
+
+        var sortedProductsByPrice = warehouse.SortProducts(product => product.Price);
+        Console.WriteLine("Сортування товарів за ціною:");
+        warehouse.DisplaySortedProducts(sortedProductsByPrice);
+    }
+}
