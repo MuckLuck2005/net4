@@ -1,0 +1,89 @@
+using System;
+
+class Ship
+{
+    protected string name;
+    protected string purpose;
+    protected int displacement;
+    protected int enginePower;
+    protected string fuelType;
+
+    public Ship(string name, string purpose, int displacement, int enginePower, string fuelType)
+    {
+        this.name = name;
+        this.purpose = purpose;
+        this.displacement = displacement;
+        this.enginePower = enginePower;
+        this.fuelType = fuelType;
+    }
+
+    public virtual void DisplayInfo()
+    {
+        Console.WriteLine($"Назва: {name}");
+        Console.WriteLine($"Призначення: {purpose}");
+        Console.WriteLine($"Водотоннажність: {displacement} тонн");
+        Console.WriteLine($"Потужність двигуна: {enginePower} кВт");
+        Console.WriteLine($"Вид палива: {fuelType}");
+    }
+}
+
+class AircraftCarrier : Ship
+{
+    private string[] aircraftTypes;
+    private int[] aircraftCounts;
+
+    public AircraftCarrier(string name, string purpose, int displacement, int enginePower, string fuelType, string[] aircraftTypes, int[] aircraftCounts)
+        : base(name, purpose, displacement, enginePower, fuelType)
+    {
+        this.aircraftTypes = aircraftTypes;
+        this.aircraftCounts = aircraftCounts;
+    }
+
+    public override void DisplayInfo()
+    {
+        base.DisplayInfo();
+        Console.WriteLine("Літаки на борту:");
+        for (int i = 0; i < aircraftTypes.Length; i++)
+        {
+            Console.WriteLine($"{aircraftTypes[i]} - {aircraftCounts[i]} шт.");
+        }
+    }
+}
+
+class MissileCarrier : Ship
+{
+    private string missileType;
+    private int missileCount;
+
+    public MissileCarrier(string name, string purpose, int displacement, int enginePower, string fuelType, string missileType, int missileCount)
+        : base(name, purpose, displacement, enginePower, fuelType)
+    {
+        this.missileType = missileType;
+        this.missileCount = missileCount;
+    }
+
+    public override void DisplayInfo()
+    {
+        base.DisplayInfo();
+        Console.WriteLine($"Тип ракет: {missileType}");
+        Console.WriteLine($"Кількість ракет: {missileCount}");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        AircraftCarrier carrier = new AircraftCarrier("USS Nimitz", "Авіаносець", 100000, 80000, "Ядерне", new string[] { "F/A-18", "E-2 Hawkeye" }, new int[] { 70, 4 });
+        MissileCarrier missileCarrier = new MissileCarrier("Kirov-class", "Ракетоносець", 28000, 125000, "Дизельне", "Крейсерні", 20);
+
+        Console.WriteLine("Інформація про авіаносець:");
+        carrier.DisplayInfo();
+        Console.WriteLine();
+
+        Console.WriteLine("Інформація про ракетоносець:");
+        missileCarrier.DisplayInfo();
+
+        Console.ReadLine();
+    }
+}
