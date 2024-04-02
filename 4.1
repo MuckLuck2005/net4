@@ -1,0 +1,24 @@
+using System;
+
+class MyClass
+{
+    private int a = 5;
+    private int b = 3;
+
+    public int C
+    {
+        get { return a + b; }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        MyClass obj = new MyClass();
+
+        Console.WriteLine("Результат операції над полями а і b: " + obj.C);
+
+        Console.ReadLine();
+    }
+}
